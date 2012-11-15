@@ -18,7 +18,7 @@ public class Main {
         */
         
         CuentaT caja = new CuentaT(1105);
-        caja.afectarDebe(50000.00, "13/08/2012", "Steven");
+        /*caja.afectarDebe(50000.00, "13/08/2012", "Steven");
         caja.afectarDebe(60000.00, "13/08/2012", "Steven");
         caja.afectarDebe(70000.00, "13/08/2012", "Steven");
         caja.afectarDebe(10000.00, "13/08/2012", "Steven");
@@ -35,7 +35,8 @@ public class Main {
         caja.afectarHaber(20000.00, "13/08/2012", "Steven");
         caja.afectarHaber(20000.00, "13/08/2012", "Steven");
         
-        System.out.println(caja.toString());
+        System.out.println(caja.toString());*/
+        caja.cerrar();
         
     }
 }

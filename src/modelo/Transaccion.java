@@ -13,6 +13,7 @@ public class Transaccion
     private double monto;
     private CalendarDriver fecha;
     private String tercero;//codigo para identificar que clienta hace la transaccion
+    private boolean tipo;//False = debe, True = Haber
     
     /**
      * La fecha debe estar en el formato dd/mm/aaaa
@@ -20,12 +21,13 @@ public class Transaccion
      * @param monto
      * @param tercero 
      */
-    public Transaccion(String fecha, double monto, String tercero)
+    public Transaccion(String fecha, double monto, String tercero, boolean tipo)
     {
         this.monto = monto;
         this.fecha = new CalendarDriver();
         this.fecha.setDate(fecha);
         this.tercero = tercero;
+        this.tipo = tipo;
     }
     
     public double getMonto()
@@ -40,7 +42,14 @@ public class Transaccion
     public String toString()
     {
         StringBuilder buffer = new StringBuilder();
-        buffer.append(fecha.getDate()).append("   ").append(monto);
+        if(tipo)
+        {
+            buffer.append(monto).append("\t").append(fecha.getDate());
+        }else
+        {
+            buffer.append(fecha.getDate()).append("\t").append(monto);
+        }
+        
         return buffer.toString();
     }
     
