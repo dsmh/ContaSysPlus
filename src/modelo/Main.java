@@ -36,7 +36,13 @@ public class Main {
         caja.afectarHaber(20000.00, "13/08/2012", "Steven");
         
         System.out.println(caja.toString());*/
-        caja.cerrar();
+        CuentaT resumenDeGastosEIngresos = new CuentaT(0000);
+        //caja.cerrar("16/11/2012",resumenDeGastosEIngresos);
+        CuentaT Servicios = new CuentaT(4235);
+        Servicios.afectarHaber(20000000,"01/11/2012", "_Cliente");
+        Servicios.afectarHaber(12000000,"01/11/2012", "_Cliente");
+        Servicios.cerrar("16/11/2012", resumenDeGastosEIngresos);
+        System.out.println(Servicios.toString());
         
     }
 }

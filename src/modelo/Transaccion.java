@@ -1,5 +1,8 @@
 package modelo;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 /**
  *
  * Esta es una transaccion simple.
@@ -41,13 +44,16 @@ public class Transaccion
      */
     public String toString()
     {
+        //Locale locale = new Locale("en");//Imprime con el formato de numero argentino
+        NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.US);//WTF!!!!! SIGUE FUNCIONANDO EN EUROS :( :(
+
         StringBuilder buffer = new StringBuilder();
         if(tipo)
         {
-            buffer.append(monto).append("\t").append(fecha.getDate());
+            buffer.append(nf.format(monto)).append("\t").append(fecha.getDate());
         }else
         {
-            buffer.append(fecha.getDate()).append("\t").append(monto);
+            buffer.append(fecha.getDate()).append("\t").append(nf.format(monto));
         }
         
         return buffer.toString();
