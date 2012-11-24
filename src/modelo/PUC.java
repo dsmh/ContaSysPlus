@@ -15,7 +15,7 @@ import java.util.TreeMap;
 import java.util.StringTokenizer;
 
 /**
- * Este objeto se encarga de cargar el PUC en memoria a traves de un arbol AVL
+ * Este objeto se encarga de cargar el PUC en memoria a traves de un arbol Rojo-Negro
  * Contiene los metodos necesarios para conocer el nombre de una cuenta
  * conociendo el codigo, y permite buscar codigos con algunas palabras clave
  * 

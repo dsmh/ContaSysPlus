@@ -54,44 +54,40 @@ public class CuentaT {
      * formato dd/mm/aaaa como control del dia de cierre de la cuenta
      */
     public void cerrar(String fecha, CuentaT resumenDeGastosEIngresos) {
-        /**
-         * TODO: A la hora de implementar el metodo toString, se debe tener en
-         * cuenta que las cuentas con una sola entrada solo necesitan de una
-         * doble linea al final.
-         */
         cerrada = true;
         int digito = Integer.parseInt(Character.toString(String.valueOf(codigo).charAt(0)));//Extraccion del primer numero de la cuenta
         if ((digito == 1) || (digito == 2) || digito == 3) {
-            if( ((debe.size() == 1) || (haber.size() == 1)) && !((debe.size() == 1) || (haber.size() == 1)))//Implementacion logica del XOR
+            if (((debe.size() == 1) || (haber.size() == 1)) && !((debe.size() == 1) || (haber.size() == 1)))//Implementacion logica del XOR
             {
-                /**NO SE HACE NADA, PUES LA CUENTA SOLO CONTIENE UNA ENTRADA 
+                /**
+                 * NO SE HACE NADA, PUES LA CUENTA SOLO CONTIENE UNA ENTRADA
                  * TODO: VERIFICAR EL FUNCIONAMIENTO DE ESTE XOR
-                 * */
-            }else{
-                        double totalDebe = this.totalizarDebe();
-                        double totalHaber = this.totalizarHaber();
-                        if (totalDebe > totalHaber) {
-                            Transaccion cierraDebe = new Transaccion(fecha, totalDebe, "Cierre", false);
-                            debe.addLast(cierraDebe);
-                            Transaccion cierraHaber = new Transaccion(fecha, totalHaber, "Cierre", true);
-                            haber.addLast(cierraHaber);
-                            ///*******************************************///
-                            double resta = totalDebe - totalHaber;
-                            Transaccion totalDebt = new Transaccion(fecha, resta, "Cierre", false);
-                            debe.addLast(totalDebt);
-                        } else {
-                            Transaccion cierraDebe = new Transaccion(fecha, totalDebe, "Cierre", false);
-                            debe.addLast(cierraDebe);
-                            Transaccion cierraHaber = new Transaccion(fecha, totalHaber, "Cierre", true);
-                            haber.addLast(cierraHaber);
-                            ///*******************************************///
-                            double resta = totalHaber - totalDebe;
-                            Transaccion totalHab = new Transaccion(fecha, resta, "Cierre", true);
-                            haber.addLast(totalHab);
-                        }
+                 *
+                 */
+            } else {
+                double totalDebe = this.totalizarDebe();
+                double totalHaber = this.totalizarHaber();
+                if (totalDebe > totalHaber) {
+                    Transaccion cierraDebe = new Transaccion(fecha, totalDebe, "Cierre", false);
+                    debe.addLast(cierraDebe);
+                    Transaccion cierraHaber = new Transaccion(fecha, totalHaber, "Cierre", true);
+                    haber.addLast(cierraHaber);
+                    ///*******************************************///
+                    double resta = totalDebe - totalHaber;
+                    Transaccion totalDebt = new Transaccion(fecha, resta, "Cierre", false);
+                    debe.addLast(totalDebt);
+                } else {
+                    Transaccion cierraDebe = new Transaccion(fecha, totalDebe, "Cierre", false);
+                    debe.addLast(cierraDebe);
+                    Transaccion cierraHaber = new Transaccion(fecha, totalHaber, "Cierre", true);
+                    haber.addLast(cierraHaber);
+                    ///*******************************************///
+                    double resta = totalHaber - totalDebe;
+                    Transaccion totalHab = new Transaccion(fecha, resta, "Cierre", true);
+                    haber.addLast(totalHab);
                 }
-        } else
-        {//hasta este punto, se totaliza la cuenta, el total se pasa al lado contrario y se consigna en el resumen
+            }
+        } else {//hasta este punto, se totaliza la cuenta, el total se pasa al lado contrario y se consigna en el resumen
             //El libro mayor sera el encargado de gestionar la cuenta resumen.
             if (digito == 4) {
                 double totalHaber = this.totalizarHaber();
@@ -143,7 +139,7 @@ public class CuentaT {
     }
 
     /**
-     * Metodo que se encarga de darle formato a la cuenta T 
+     * Metodo que se encarga de darle formato a la cuenta T
      *
      * @return
      */
@@ -214,19 +210,20 @@ public class CuentaT {
         }/**
          * En este punto se mira si la cuenta ha sido cerrada y se imprime como
          * se debe.
-         * 
+         *
          *
          */
         else {
             int digito = Integer.parseInt(Character.toString(String.valueOf(codigo).charAt(0)));//Extraccion del primer numero de la cuenta
             if ((digito == 1) || (digito == 2) || digito == 3) {
-                if( ((debe.size() == 1) || (haber.size() == 1)) && !((debe.size() == 1) || (haber.size() == 1)))//Implementacion logica del XOR
+                if (((debe.size() == 1) || (haber.size() == 1)) && !((debe.size() == 1) || (haber.size() == 1)))//Implementacion logica del XOR
                 {
-                /**Solo se introduce la doble linea al final, pues este XOR nos filtra las cuentas
-                 * con una sola entrada.
-                 * TODO: VERIFICAR EL FUNCIONAMIENTO DE ESTE XOR
-                 * */
-                   
+                    /**
+                     * Solo se introduce la doble linea al final, pues este XOR
+                     * nos filtra las cuentas con una sola entrada. TODO:
+                     * VERIFICAR EL FUNCIONAMIENTO DE ESTE XOR
+                 *
+                     */
                     for (int i = 0; i < lineas; i++) {//de 0 a 74 se crean los guiones PARA EL CIERRE
                         buffer.append("-");
                     }
@@ -234,112 +231,130 @@ public class CuentaT {
                     for (int i = 0; i < lineas; i++) {//de 0 a 74 se crean los guiones PARA EL CIERRE
                         buffer.append("-");
                     }
-                }else{
-                       double totalDebe = this.totalizarDebe();
-                       double totalHaber = this.totalizarHaber();
-                       if(totalDebe > totalHaber){
-                           if(clonDebe.size() >= clonHaber.size())
-                           {
-                               while(clonDebe.size() > 2){
-                                   if(clonHaber.size() > 1){
-                                       buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
-                                   }else{
-                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\n");                                        
-                                   }
-                               }
-                               for (int i = 0; i < lineas; i++) {//de 0 a 74 se crean los guiones PARA EL CIERRE
-                                    buffer.append("-");
-                               }
-                               buffer.append("\n");
-                               buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
-                               buffer.append(clonDebe.pollFirst().toString()).append("\t|\n");
-                               for (int i = 0; i < lineas; i++) {//de 0 a 74 se crean los guiones PARA EL CIERRE
-                                    buffer.append("-");
-                               }
-                               buffer.append("\n");
-                               for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
-                                    buffer.append("-");
-                               }
-                               buffer.append("\n");
-                           }else//Si el debe es mayor en magnitud, pero no en numero de transaciones TODO:OJO CON ESTE PUNTO
-                           {
-                               while(clonHaber.size() > 1){
-                                   if(clonDebe.size() > 2){
-                                       buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
-                                   }else{
-                                        buffer.append("\t\t\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");                                       
-                                   }
-                               }
-                               for (int i = 0; i < lineas; i++) {//de 0 a LINEAS se crean los guiones PARA EL CIERRE
-                                    buffer.append("-");
-                               }
-                               buffer.append("\n");
-                               buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
-                               buffer.append(clonDebe.pollFirst().toString()).append("\t|\n");
-                               for (int i = 0; i < lineas; i++) {//de 0 a LINEAS se crean los guiones PARA EL CIERRE
-                                    buffer.append("-");
-                               }
-                               buffer.append("\n");
-                               for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
-                                    buffer.append("-");
-                               }
-                               buffer.append("\n");
-                           }
-                       }else //Cuando el totalHaber es mayor que el totalDebe
-                       {
-                            if(clonDebe.size() >= clonHaber.size())//El haber es mayor en magnitud, pero no en cantidad de transacciones
-                           {
-                               while(clonDebe.size() > 1){
-                                   if(clonHaber.size() > 2){
-                                       buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
-                                   }else{
-                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\n");                                        
-                                   }
-                               }
-                               for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
-                                    buffer.append("-");
-                               }
-                               buffer.append("\n");
-                               buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
-                               buffer.append("\t\t\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
-                               for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
-                                    buffer.append("-");
-                               }
-                               buffer.append("\n");
-                               for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
-                                    buffer.append("-");
-                               }
-                               buffer.append("\n");
-                           }else//El haber es mayor en magnitud y numero de transacciones                                
-                           {
-                               while(clonHaber.size() > 2){
-                                   if(clonDebe.size() > 1){
-                                       buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
-                                   }else{
-                                        buffer.append("\t\t\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");                                       
-                                   }
-                               }
-                               for (int i = 0; i < lineas; i++) {//de 0 a LINEAS se crean los guiones PARA EL CIERRE
-                                    buffer.append("-");
-                               }
-                               buffer.append("\n");
-                               buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
-                               buffer.append("\t\t\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
-                               for (int i = 0; i < lineas; i++) {//de 0 a LINEAS se crean los guiones PARA EL CIERRE
-                                    buffer.append("-");
-                               }
-                               buffer.append("\n");
-                               for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
-                                    buffer.append("-");
-                               }
-                               buffer.append("\n");
-                           }
-                       }
+                } else {
+                    double totalDebe = this.totalizarDebe();
+                    double totalHaber = this.totalizarHaber();
+                    if (totalDebe > totalHaber) {
+                        if (clonDebe.size() >= clonHaber.size()) {
+                            while (clonDebe.size() > 2) {
+                                if (clonHaber.size() > 1) {
+                                    buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                } else {
+                                    buffer.append(clonDebe.pollFirst().toString()).append("\t|\n");
+                                }
+                            }
+                            for (int i = 0; i < lineas; i++) {//de 0 a 74 se crean los guiones PARA EL CIERRE
+                                buffer.append("-");
+                            }
+                            buffer.append("\n");
+                            buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                            //Se imprime linea antes de la magnitud final
+                            for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
+                                buffer.append("-");
+                            }
+                            buffer.append("\n");//Fin impresion linea antes de la magnitud final
+                            buffer.append(clonDebe.pollFirst().toString()).append("\t|\n");
+                            for (int i = 0; i < lineas; i++) {//de 0 a 74 se crean los guiones PARA EL CIERRE
+                                buffer.append("-");
+                            }
+                            buffer.append("\n");
+                            for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
+                                buffer.append("-");
+                            }
+                            buffer.append("\n");
+                        } else//Si el debe es mayor en magnitud, pero no en numero de transaciones TODO:OJO CON ESTE PUNTO
+                        {
+                            while (clonHaber.size() > 1) {
+                                if (clonDebe.size() > 2) {
+                                    buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                } else {
+                                    buffer.append("\t\t\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                }
+                            }
+                            for (int i = 0; i < lineas; i++) {//de 0 a LINEAS se crean los guiones PARA EL CIERRE
+                                buffer.append("-");
+                            }
+                            buffer.append("\n");
+                            buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                            //Se imprime linea antes de la magnitud final
+                            for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
+                                buffer.append("-");
+                            }
+                            buffer.append("\n");//Fin impresion linea antes de la magnitud final
+                            buffer.append(clonDebe.pollFirst().toString()).append("\t|\n");
+                            for (int i = 0; i < lineas; i++) {//de 0 a LINEAS se crean los guiones PARA EL CIERRE
+                                buffer.append("-");
+                            }
+                            buffer.append("\n");
+                            for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
+                                buffer.append("-");
+                            }
+                            buffer.append("\n");
+                        }
+                    } else //Cuando el totalHaber es mayor que el totalDebe
+                    {
+                        if (clonDebe.size() >= clonHaber.size())//El haber es mayor en magnitud, pero no en cantidad de transacciones
+                        {
+                            while (clonDebe.size() > 1) {
+                                if (clonHaber.size() > 2) {
+                                    buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                } else {
+                                    buffer.append(clonDebe.pollFirst().toString()).append("\t|\n");
+                                }
+                            }
+                            for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
+                                buffer.append("-");
+                            }
+                            buffer.append("\n");
+                            buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                            //Se imprime linea antes de la magnitud final
+                            for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
+                                buffer.append("-");
+                            }
+                            buffer.append("\n");//Fin impresion linea antes de la magnitud final
+                            buffer.append("\t\t\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                            for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
+                                buffer.append("-");
+                            }
+                            buffer.append("\n");
+                            for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
+                                buffer.append("-");
+                            }
+                            buffer.append("\n");
+                        } else//El haber es mayor en magnitud y numero de transacciones                                
+                        {
+                            while (clonHaber.size() > 2) {
+                                if (clonDebe.size() > 1) {
+                                    buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                } else {
+                                    buffer.append("\t\t\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                }
+                            }
+                            for (int i = 0; i < lineas; i++) {//de 0 a LINEAS se crean los guiones PARA EL CIERRE
+                                buffer.append("-");
+                            }
+                            buffer.append("\n");
+                            buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                            //Se imprime linea antes de la magnitud final
+                            for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
+                                buffer.append("-");
+                            }
+                            buffer.append("\n");//Fin impresion linea antes de la magnitud final
+                            buffer.append("\t\t\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                            for (int i = 0; i < lineas; i++) {//de 0 a LINEAS se crean los guiones PARA EL CIERRE
+                                buffer.append("-");
+                            }
+                            buffer.append("\n");
+                            for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
+                                buffer.append("-");
+                            }
+                            buffer.append("\n");
+                        }
+                    }
                 }
-                
-                
-            }else
-            {
+
+
+            } else {
                 if (tamHaber >= tamDebe)//Si las transacciones en el haber son mayores o iguales a las del debe
                 {
                     while (clonHaber.size() > 1) {
@@ -360,19 +375,23 @@ public class CuentaT {
 
                     }
                 }
+
+                //Desde aca se corto y pego para solucionar un error en la impresion de cuentas del activo,patrimonio y pasivo.
+                //TODO: Verificar que las cuentas de gastos y demas, si esten imprimiendo bien luego de este cambio
+                for (int i = 0; i < lineas; i++) {//de 0 a 74 se crean los guiones PARA EL CIERRE
+                    buffer.append("-");
+                }
+                buffer.append("\n");
+                buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                for (int i = 0; i < lineas; i++) {//de 0 a 74 se crean los guiones PARA EL CIERRE
+                    buffer.append("-");
+                }
+                buffer.append("\n");
+                for (int i = 0; i < lineas; i++) {//de 0 a 74 se crean los guiones PARA EL CIERRE
+                    buffer.append("-");
+                }//Hasta aca
             }
-            for (int i = 0; i < lineas; i++) {//de 0 a 74 se crean los guiones PARA EL CIERRE
-                buffer.append("-");
-            }
-            buffer.append("\n");
-            buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
-            for (int i = 0; i < lineas; i++) {//de 0 a 74 se crean los guiones PARA EL CIERRE
-                buffer.append("-");
-            }
-            buffer.append("\n");
-            for (int i = 0; i < lineas; i++) {//de 0 a 74 se crean los guiones PARA EL CIERRE
-                buffer.append("-");
-            }
+
         }
 
         return buffer.toString();
