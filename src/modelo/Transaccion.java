@@ -50,10 +50,10 @@ public class Transaccion
         StringBuilder buffer = new StringBuilder();
         if(tipo)
         {
-            buffer.append(nf.format(monto)).append("\t").append(fecha.getDate());
+            buffer.append(nf.format(monto)).append(" ").append(fecha.getDate());
         }else
         {
-            buffer.append(fecha.getDate()).append("\t").append(nf.format(monto));
+            buffer.append(fecha.getDate()).append(" ").append(nf.format(monto));
         }
         
         return buffer.toString();

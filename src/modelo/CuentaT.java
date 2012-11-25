@@ -145,7 +145,7 @@ public class CuentaT {
      */
     public String toString() {
         StringBuilder buffer = new StringBuilder();
-        int lineas = 90;//El numero de lineas que se ponen horizontalmente
+        int lineas = 140;//El numero de lineas que se ponen horizontalmente
         /**
          * Se cambiara el metodo para hacer la cuenta T, ya que es mejor tratar
          * la cadena de titulo para hacerla cuadrar en un espacio en vez de
@@ -189,7 +189,7 @@ public class CuentaT {
                         buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
                     } else {
                         //Verificar este punto, en donde se imprime sin las transacciones del debe
-                        buffer.append("\t\t\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                        buffer.append("\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
 
                     }
                 }
@@ -268,7 +268,7 @@ public class CuentaT {
                                 if (clonDebe.size() > 2) {
                                     buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
                                 } else {
-                                    buffer.append("\t\t\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    buffer.append("\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
                                 }
                             }
                             for (int i = 0; i < lineas; i++) {//de 0 a LINEAS se crean los guiones PARA EL CIERRE
@@ -312,7 +312,7 @@ public class CuentaT {
                                 buffer.append("-");
                             }
                             buffer.append("\n");//Fin impresion linea antes de la magnitud final
-                            buffer.append("\t\t\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                            buffer.append("\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
                             for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
                                 buffer.append("-");
                             }
@@ -327,7 +327,7 @@ public class CuentaT {
                                 if (clonDebe.size() > 1) {
                                     buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
                                 } else {
-                                    buffer.append("\t\t\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    buffer.append("\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
                                 }
                             }
                             for (int i = 0; i < lineas; i++) {//de 0 a LINEAS se crean los guiones PARA EL CIERRE
@@ -340,7 +340,7 @@ public class CuentaT {
                                 buffer.append("-");
                             }
                             buffer.append("\n");//Fin impresion linea antes de la magnitud final
-                            buffer.append("\t\t\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                            buffer.append("\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
                             for (int i = 0; i < lineas; i++) {//de 0 a LINEAS se crean los guiones PARA EL CIERRE
                                 buffer.append("-");
                             }
@@ -361,7 +361,7 @@ public class CuentaT {
                         if (clonDebe.size() > 1) {
                             buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
                         } else {
-                            buffer.append("\t\t\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                            buffer.append("\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
 
                         }
                     }
@@ -376,8 +376,6 @@ public class CuentaT {
                     }
                 }
 
-                //Desde aca se corto y pego para solucionar un error en la impresion de cuentas del activo,patrimonio y pasivo.
-                //TODO: Verificar que las cuentas de gastos y demas, si esten imprimiendo bien luego de este cambio
                 for (int i = 0; i < lineas; i++) {//de 0 a 74 se crean los guiones PARA EL CIERRE
                     buffer.append("-");
                 }

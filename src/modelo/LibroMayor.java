@@ -71,6 +71,7 @@ public class LibroMayor
             temp.cerrar(fecha, resumenDeGastosEIngresos);
             libroMayor.put(temp.codigo, temp);
         }
+        libroMayor.put(resumenDeGastosEIngresos.codigo, resumenDeGastosEIngresos);
         return resumenDeGastosEIngresos;
     }
     
