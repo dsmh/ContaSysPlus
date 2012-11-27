@@ -45,7 +45,7 @@ public class Transaccion
     public String toString()
     {
         //Locale locale = new Locale("en");//Imprime con el formato de numero argentino
-        NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.US);//WTF!!!!! SIGUE FUNCIONANDO EN EUROS :( :(
+        NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.US);
 
         StringBuilder buffer = new StringBuilder();
         if(tipo)

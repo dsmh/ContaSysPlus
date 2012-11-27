@@ -28,6 +28,9 @@ public class Registrar extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        frameCorrecto = new javax.swing.JFrame();
+        jLabel7 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         fechaField = new javax.swing.JFormattedTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -40,6 +43,42 @@ public class Registrar extends javax.swing.JFrame {
         jRadioDebe = new javax.swing.JRadioButton();
         jRadioHaber = new javax.swing.JRadioButton();
         jButton1 = new javax.swing.JButton();
+
+        jLabel7.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(253, 89, 10));
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("Registro exitoso");
+
+        jButton2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jButton2.setText("Continuar");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout frameCorrectoLayout = new javax.swing.GroupLayout(frameCorrecto.getContentPane());
+        frameCorrecto.getContentPane().setLayout(frameCorrectoLayout);
+        frameCorrectoLayout.setHorizontalGroup(
+            frameCorrectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(frameCorrectoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(frameCorrectoLayout.createSequentialGroup()
+                .addGap(105, 105, 105)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(120, Short.MAX_VALUE))
+        );
+        frameCorrectoLayout.setVerticalGroup(
+            frameCorrectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(frameCorrectoLayout.createSequentialGroup()
+                .addGap(77, 77, 77)
+                .addComponent(jLabel7)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -58,6 +97,7 @@ public class Registrar extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel4.setText("Tercero");
 
+        jLabel5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel5.setText("Monto");
         jLabel5.setToolTipText("");
 
@@ -159,6 +199,7 @@ public class Registrar extends javax.swing.JFrame {
             tipo = true;
         }
         libroMayor.afectarLibro(codigo, monto, terceroField.getText(), fechaField.getText(), tipo);
+        frameCorrecto.setVisible(true);
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void jRadioDebeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRadioDebeMouseClicked
@@ -175,6 +216,10 @@ public class Registrar extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jRadioHaberMouseClicked
 
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+      frameCorrecto.setVisible(false);
+    }//GEN-LAST:event_jButton2MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -182,12 +227,15 @@ public class Registrar extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField cuentaField;
     private javax.swing.JFormattedTextField fechaField;
+    private javax.swing.JFrame frameCorrecto;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JRadioButton jRadioDebe;
     private javax.swing.JRadioButton jRadioHaber;
     private javax.swing.JTextField montoField;

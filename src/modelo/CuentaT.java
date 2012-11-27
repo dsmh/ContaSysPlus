@@ -1,5 +1,8 @@
 /*
- *Este objeto es una cuenta T, consta de dos listas enlazadas (debe y haber).
+ * TODO: Modificar el constructor para recibir el PUC por parametro, ya que 
+ * con el diseño actual, cada cuenta T tiene su propia copia del PUC en memoria.
+ * 
+ * Este objeto es una cuenta T, consta de dos listas enlazadas (debe y haber).
  * 
  * EN ESTA PRIMERA VERSION DEL OBJETO SE TIENE:
  * **   Se crea una nueva cuenta T a partir del codigo; la cuenta comienza en 0
@@ -170,7 +173,7 @@ public class CuentaT {
         } else {
             buffer.append(nombre + "\n");
         }
-        for (int i = 0; i < lineas; i++) {//de 0 a 74 se crean los guiones debajo del titulo
+        for (int i = 0; i < lineas; i++) {//de 0 a Lineas se crean los guiones debajo del titulo
             buffer.append("-");
         }
         buffer.append("\n");
