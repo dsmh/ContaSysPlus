@@ -19,13 +19,15 @@ import java.util.StringTokenizer;
 public class CuentaT {
 
     public int codigo;
-    private PUC puc = new PUC();
+    public double saldo;//Valor final de la cuenta, (-) si esta en el haber.
+    private PUC puc;
     public String nombre;
     private boolean cerrada = false;//INDICA SI LA CUENTA T Y HA SIDO CERRADA.
     private LinkedList<Transaccion> debe;
     private LinkedList<Transaccion> haber;
 
-    public CuentaT(int codigo) {
+    public CuentaT(int codigo,PUC puc) {
+        this.puc = puc;
         this.codigo = codigo;
         nombre = puc.claveToCuenta(codigo);
         debe = new LinkedList<Transaccion>();
@@ -78,6 +80,7 @@ public class CuentaT {
                     ///*******************************************///
                     double resta = totalDebe - totalHaber;
                     Transaccion totalDebt = new Transaccion(fecha, resta, "Cierre", false);
+                    saldo = resta;//Guardo el saldo de la cuenta
                     debe.addLast(totalDebt);
                 } else {
                     Transaccion cierraDebe = new Transaccion(fecha, totalDebe, "Cierre", false);
@@ -86,17 +89,21 @@ public class CuentaT {
                     haber.addLast(cierraHaber);
                     ///*******************************************///
                     double resta = totalHaber - totalDebe;
+                    saldo = resta * -1;//Guardo el saldo de la cuenta
                     Transaccion totalHab = new Transaccion(fecha, resta, "Cierre", true);
                     haber.addLast(totalHab);
                 }
             }
         } else {//hasta este punto, se totaliza la cuenta, el total se pasa al lado contrario y se consigna en el resumen
             //El libro mayor sera el encargado de gestionar la cuenta resumen.
+            if(digito!= 0)//Esto es para manejar diferente el cierre del resumen
+            {
             if (digito == 4) {
                 double totalHaber = this.totalizarHaber();
                 this.afectarDebe(totalHaber, fecha, "Cierre");
                 this.afectarDebe(totalHaber, fecha, "Cierre");//PARA LA IMPRESION FINAL
                 this.afectarHaber(totalHaber, fecha, "Cierre");//PARA LA IMPRESION FINAL
+                saldo = totalHaber * -1;//Guardo el saldo de la cuenta
                 resumenDeGastosEIngresos.afectarHaber(totalHaber, fecha, "Cierre");
             } else {
                 double totalDebe = this.totalizarDebe();
@@ -104,6 +111,16 @@ public class CuentaT {
                 this.afectarHaber(totalDebe, fecha, "Cierre");//PARA LA IMPRESION FINAL
                 this.afectarDebe(totalDebe, fecha, "Cierre");//PARA LA IMPRESION FINAL
                 resumenDeGastosEIngresos.afectarDebe(totalDebe, fecha, "Cierre");
+                saldo = totalDebe;//Guardo el saldo de la cuenta
+            }
+            }else{//INICIA EL CIERRE DE LA CUENTA RESUMEN
+                /**
+                 * TODO: tener en cuenta la logica de este cierre.
+                 * El cierre de la cuenta resumen esta pendiente.
+                 */
+                double totalHaber = this.totalizarHaber();
+                double totalDebe = this.totalizarHaber();
+                
             }
 
 
@@ -140,6 +157,16 @@ public class CuentaT {
         }
         return result;
     }
+    
+    /**
+     * 
+     * @return Este metodo retorna el digito de la cuenta T
+     */
+    public int digito()
+    {
+        int digito = Integer.parseInt(Character.toString(String.valueOf(codigo).charAt(0)));
+        return digito;
+    }
 
     /**
      * Metodo que se encarga de darle formato a la cuenta T
@@ -156,7 +183,7 @@ public class CuentaT {
          * cadena.
          */
         int tamanoCadena = nombre.length();
-        buffer.append(" " + codigo + " -> ");
+        buffer.append("      ");
         if (tamanoCadena >= 50) {
             int contador = 0;
             StringTokenizer tok = new StringTokenizer(nombre);
@@ -218,6 +245,19 @@ public class CuentaT {
          */
         else {
             int digito = Integer.parseInt(Character.toString(String.valueOf(codigo).charAt(0)));//Extraccion del primer numero de la cuenta
+            /**
+             * Este fragmento se creo para imprimir la cuenta auxiliar RESUMEN DE 
+             * GASTOS E INGRESOS
+             * TODO: TERMINAR LA IMPRESION DE LA CUENTA RESUMEN
+             * 
+             */
+            if(digito == 0)
+            {
+                double totalDebe = this.totalizarDebe();
+                double totalHaber = this.totalizarHaber();
+                
+            }
+            /////////////////////////////////////FIN DEL LA IMPRESION RESUNEM.....////////////////////////77
             if ((digito == 1) || (digito == 2) || digito == 3) {
                 if (((debe.size() == 1) || (haber.size() == 1)) && !((debe.size() == 1) || (haber.size() == 1)))//Implementacion logica del XOR
                 {

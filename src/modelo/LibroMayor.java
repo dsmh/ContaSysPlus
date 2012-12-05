@@ -2,9 +2,12 @@
 package modelo;
 
 import java.util.TreeMap;
+import java.util.LinkedList;
 
 public class LibroMayor 
 {
+    //El libro mayor contendra el PUC TODO: mirar si se gestiona mejor la memoria asi
+    PUC puc = new PUC();
     private TreeMap<Integer,CuentaT> libroMayor;
     
     public LibroMayor()
@@ -38,7 +41,7 @@ public class LibroMayor
            
         }else
         {
-            CuentaT nuevaCuenta = new CuentaT(codigo);
+            CuentaT nuevaCuenta = new CuentaT(codigo,puc);
             libroMayor.put(codigo, nuevaCuenta);
             
             if(tipo)
@@ -62,7 +65,7 @@ public class LibroMayor
      */
     public CuentaT cerrarLibro(String fecha)
     {
-        CuentaT resumenDeGastosEIngresos = new CuentaT(0000);
+        CuentaT resumenDeGastosEIngresos = new CuentaT(0000,puc);
         TreeMap<Integer,CuentaT> clonLibro = (TreeMap<Integer,CuentaT>)libroMayor.clone();
         libroMayor.clear();
         while(clonLibro.size() > 0)
@@ -73,6 +76,42 @@ public class LibroMayor
         }
         libroMayor.put(resumenDeGastosEIngresos.codigo, resumenDeGastosEIngresos);
         return resumenDeGastosEIngresos;
+    }
+    
+    /**
+     * Este metodo pasa la informacion ordena para el balance de comprobacion
+     * 
+     * retorna una lista doblemente enlazada con las cuentas necesarias para 
+     * el balance de comprobacion, es decir, primero los activos, luego los pasivos
+     * el patrimonio, los ingresos y los gastos.
+     * 
+     * 
+     * @return 
+     */
+    public LinkedList<CuentaT> balanceComprobacion()
+    {
+        LinkedList<CuentaT> balance = new LinkedList<CuentaT>();
+        TreeMap<Integer,CuentaT> clonLibro = (TreeMap<Integer,CuentaT>)libroMayor.clone();
+         
+        while(clonLibro.size() > 0)
+        {
+            CuentaT temp = clonLibro.pollFirstEntry().getValue();
+            int digito = temp.digito();
+            if((digito == 1) || (digito == 2) || (digito == 3) || (digito == 4) || (digito == 5) )
+            {
+                balance.addLast(temp);
+                /*
+      
+                switch(digito)
+                {
+                    case 1: 
+                    {
+                        balance.addLast(temp);
+                    } 
+                }*/
+            }
+        }
+        return balance;
     }
     
     public String toString()

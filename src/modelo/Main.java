@@ -15,7 +15,7 @@ public class Main {
         /*
         PUC puc = new PUC();
         puc.nuevaCuenta(59558, "cuenta de prueba");
-        */
+        
         
         CuentaT caja = new CuentaT(1105);
         caja.afectarDebe(50000.00, "13/08/2012", "Steven");
@@ -57,6 +57,6 @@ public class Main {
         Servicios.cerrar("16/11/2012", resumenDeGastosEIngresos);
         
         System.out.println(Servicios.toString());
-        
+        */
     }
 }

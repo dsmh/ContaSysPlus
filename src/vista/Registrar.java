@@ -44,6 +44,8 @@ public class Registrar extends javax.swing.JFrame {
         jRadioHaber = new javax.swing.JRadioButton();
         jButton1 = new javax.swing.JButton();
 
+        frameCorrecto.setMinimumSize(new java.awt.Dimension(454, 225));
+
         jLabel7.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(253, 89, 10));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -68,7 +70,7 @@ public class Registrar extends javax.swing.JFrame {
             .addGroup(frameCorrectoLayout.createSequentialGroup()
                 .addGap(105, 105, 105)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(120, Short.MAX_VALUE))
+                .addContainerGap(124, Short.MAX_VALUE))
         );
         frameCorrectoLayout.setVerticalGroup(
             frameCorrectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -77,7 +79,7 @@ public class Registrar extends javax.swing.JFrame {
                 .addComponent(jLabel7)
                 .addGap(18, 18, 18)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
