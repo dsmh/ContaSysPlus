@@ -114,13 +114,36 @@ public class CuentaT {
                 saldo = totalDebe;//Guardo el saldo de la cuenta
             }
             }else{//INICIA EL CIERRE DE LA CUENTA RESUMEN
-                /**
-                 * TODO: tener en cuenta la logica de este cierre.
-                 * El cierre de la cuenta resumen esta pendiente.
-                 */
                 double totalHaber = this.totalizarHaber();
-                double totalDebe = this.totalizarHaber();
-                
+                double totalDebe = this.totalizarDebe();
+                this.afectarDebe(totalDebe, fecha, "Cierre");
+                this.afectarHaber(totalHaber, fecha, "Cierre");
+                if(totalHaber > totalDebe)
+                {
+                    /**
+                     * Si el haber es mayor que el debe hubo utilidad en el ejercicio
+                     * se procede a poner el valor de la resta en la cuenta T pero del lado del 
+                     * debe, para luego nivelar la cuenta en 0.
+                     * 
+                     * El saldo queda + ya que este va consignado en el debe y el aber de Utilidad del ejercicio
+                     */
+                    double resta = (totalHaber - totalDebe);
+                    saldo = resta;
+                    this.afectarDebe(resta, fecha, "Cierre");
+                    double level = totalDebe + resta;
+                    this.afectarDebe(level, fecha, "Cierre");
+                    this.afectarHaber(level, fecha, "Cierre");
+                    
+                }else{
+                    
+                    double resta = totalDebe-totalHaber;
+                    saldo = resta*-1;
+                    this.afectarHaber(resta, fecha, "Cierre");
+                    double level = totalHaber + resta;
+                    this.afectarDebe(level, fecha, "Cierre");
+                    this.afectarHaber(level, fecha, "Cierre");
+                    
+                }
             }
 
 
@@ -216,7 +239,12 @@ public class CuentaT {
             {
                 while (clonHaber.size() > 0) {
                     if (clonDebe.size() > 0) {
-                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                        if(clonDebe.peekFirst().getMonto() < 1000000)
+                                    {
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }
                     } else {
                         //Verificar este punto, en donde se imprime sin las transacciones del debe
                         buffer.append("\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
@@ -226,11 +254,22 @@ public class CuentaT {
             } else {
                 while (clonDebe.size() > 0) {
                     if (clonHaber.size() > 0) {
-                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                        if(clonDebe.peekFirst().getMonto() < 1000000)
+                                    {
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }
                     } else {
 
                         //Verificar este punto, en donde se imprime sin las transacciones del hebr
-                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append("\n");
+                        if(clonDebe.peekFirst().getMonto() < 1000000)
+                        {
+                            buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\t").append("\n");
+                        }else{
+                            buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append("\n");
+                        }
+                        
 
 
                     }
@@ -248,16 +287,155 @@ public class CuentaT {
             /**
              * Este fragmento se creo para imprimir la cuenta auxiliar RESUMEN DE 
              * GASTOS E INGRESOS
-             * TODO: TERMINAR LA IMPRESION DE LA CUENTA RESUMEN
+             *
              * 
              */
             if(digito == 0)
             {
-                double totalDebe = this.totalizarDebe();
-                double totalHaber = this.totalizarHaber();
-                
+                    if(saldo>0)
+                    {
+                        if(tamDebe - 3 >= tamHaber - 2){//Si el debe es mayor al haber en transacciones
+                            while(clonDebe.size()>3)
+                            {
+                                if(clonHaber.size()>2){
+                                    if(clonDebe.peekFirst().getMonto() < 1000000)
+                                    {
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }
+                                }else{
+                                    if(clonDebe.peekFirst().getMonto() < 1000000)
+                                    {
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\n");
+                                    }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\n");
+                                    }
+                                    
+                                }
+                            }
+                        }else
+                        {
+                            while(clonHaber.size()>2){
+                                if(clonDebe.size()>3){
+                                    if(clonDebe.peekFirst().getMonto() < 1000000)
+                                    {
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }
+                                }
+                                else{
+                                    buffer.append("\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                }
+                            }
+                        }
+                        for (int i = 0; i < lineas; i++) {//de 0 a 74 se crean los guiones PARA EL CIERRE
+                            buffer.append("-");
+                        }
+                        buffer.append("\n");
+                        if(clonDebe.peekFirst().getMonto() < 1000000)
+                                    {
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }
+                        for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
+                            buffer.append("-");
+                        }
+                        buffer.append("\n");
+                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\n");
+                        for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
+                            buffer.append("-");
+                        }
+                        buffer.append("\n");
+                        if(clonDebe.peekFirst().getMonto() < 1000000)
+                                    {
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }
+                        for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
+                            buffer.append("-");
+                        }
+                        buffer.append("\n");
+                        for (int i = 0; i < lineas; i++) {//de 0 a 74 se crean los guiones PARA EL CIERRE
+                            buffer.append("-");
+                        }
+                        buffer.append("\n");
+                    }else
+                    {
+                        if(tamHaber - 3 >= tamDebe-2){
+                            while(clonHaber.size()>3)
+                            {
+                                if(clonDebe.size()>2){
+                                     if(clonDebe.peekFirst().getMonto() < 1000000)
+                                    {
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }
+                                }else{
+                                    buffer.append("\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                }
+                            }
+                        }else{
+                            while(clonDebe.size()>2)
+                            {
+                                if(clonHaber.size()>3)
+                                {
+                                    if(clonDebe.peekFirst().getMonto() < 1000000)
+                                    {
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }
+                                }else{
+                                    if(clonDebe.peekFirst().getMonto() < 1000000){
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\n");
+                                    }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\n");
+                                    }
+                                }
+                            }
+                            for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
+                                buffer.append("-");
+                            }
+                            buffer.append("\n");
+                            if(clonDebe.peekFirst().getMonto() < 1000000)
+                                    {
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }
+                            for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
+                                buffer.append("-");
+                            }
+                            buffer.append("\n");
+                            buffer.append("\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                            for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
+                                buffer.append("-");
+                            }
+                            buffer.append("\n");
+                            if(clonDebe.peekFirst().getMonto() < 1000000)
+                                    {
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }
+                            for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
+                                buffer.append("-");
+                            }
+                            buffer.append("\n");
+                            for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
+                                buffer.append("-");
+                            }
+                            buffer.append("\n");
+                        }
+                    }
+                    
             }
-            /////////////////////////////////////FIN DEL LA IMPRESION RESUNEM.....////////////////////////77
+            /////////////////////////////////////FIN DEL LA IMPRESION RESUMEN.....////////////////////////            
             if ((digito == 1) || (digito == 2) || digito == 3) {
                 if (((debe.size() == 1) || (haber.size() == 1)) && !((debe.size() == 1) || (haber.size() == 1)))//Implementacion logica del XOR
                 {
@@ -281,22 +459,44 @@ public class CuentaT {
                         if (clonDebe.size() >= clonHaber.size()) {
                             while (clonDebe.size() > 2) {
                                 if (clonHaber.size() > 1) {
-                                    buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    if(clonDebe.peekFirst().getMonto() < 1000000)
+                                    {
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }
                                 } else {
-                                    buffer.append(clonDebe.pollFirst().toString()).append("\t|\n");
+                                    if(clonDebe.peekFirst().getMonto() < 1000000)
+                                    {
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\n");
+                                    }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\n");
+                                    }
+                                    
                                 }
                             }
                             for (int i = 0; i < lineas; i++) {//de 0 a 74 se crean los guiones PARA EL CIERRE
                                 buffer.append("-");
                             }
                             buffer.append("\n");
-                            buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                            if(clonDebe.peekFirst().getMonto() < 1000000)
+                                    {
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }
                             //Se imprime linea antes de la magnitud final
                             for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
                                 buffer.append("-");
                             }
                             buffer.append("\n");//Fin impresion linea antes de la magnitud final
-                            buffer.append(clonDebe.pollFirst().toString()).append("\t|\n");
+                            if(clonDebe.peekFirst().getMonto() < 1000000)
+                            {
+                                buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\n");
+                            }else{
+                                buffer.append(clonDebe.pollFirst().toString()).append("\t|\n");
+                            }
+                            
                             for (int i = 0; i < lineas; i++) {//de 0 a 74 se crean los guiones PARA EL CIERRE
                                 buffer.append("-");
                             }
@@ -305,11 +505,16 @@ public class CuentaT {
                                 buffer.append("-");
                             }
                             buffer.append("\n");
-                        } else//Si el debe es mayor en magnitud, pero no en numero de transaciones TODO:OJO CON ESTE PUNTO
+                        } else//Si el debe es mayor en magnitud, pero no en numero de transaciones 
                         {
                             while (clonHaber.size() > 1) {
                                 if (clonDebe.size() > 2) {
-                                    buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    if(clonDebe.peekFirst().getMonto() < 1000000)
+                                    {
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }
                                 } else {
                                     buffer.append("\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
                                 }
@@ -318,13 +523,24 @@ public class CuentaT {
                                 buffer.append("-");
                             }
                             buffer.append("\n");
-                            buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                            if(clonDebe.peekFirst().getMonto() < 1000000)
+                                    {
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }
                             //Se imprime linea antes de la magnitud final
                             for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
                                 buffer.append("-");
                             }
                             buffer.append("\n");//Fin impresion linea antes de la magnitud final
-                            buffer.append(clonDebe.pollFirst().toString()).append("\t|\n");
+                            if(clonDebe.peekFirst().getMonto() < 1000000)
+                            {
+                                buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\n");
+                            }else{
+                                buffer.append(clonDebe.pollFirst().toString()).append("\t|\n");
+                            }
+                            
                             for (int i = 0; i < lineas; i++) {//de 0 a LINEAS se crean los guiones PARA EL CIERRE
                                 buffer.append("-");
                             }
@@ -340,16 +556,31 @@ public class CuentaT {
                         {
                             while (clonDebe.size() > 1) {
                                 if (clonHaber.size() > 2) {
-                                    buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    if(clonDebe.peekFirst().getMonto() < 1000000)
+                                    {
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }
                                 } else {
-                                    buffer.append(clonDebe.pollFirst().toString()).append("\t|\n");
+                                    if(clonDebe.peekFirst().getMonto() < 1000000)
+                                   {
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\n");
+                                     }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\n");
+                                    }
                                 }
                             }
                             for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
                                 buffer.append("-");
                             }
                             buffer.append("\n");
-                            buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                            if(clonDebe.peekFirst().getMonto() < 1000000)
+                                    {
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }
                             //Se imprime linea antes de la magnitud final
                             for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
                                 buffer.append("-");
@@ -368,7 +599,12 @@ public class CuentaT {
                         {
                             while (clonHaber.size() > 2) {
                                 if (clonDebe.size() > 1) {
-                                    buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    if(clonDebe.peekFirst().getMonto() < 1000000)
+                                    {
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }
                                 } else {
                                     buffer.append("\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
                                 }
@@ -377,7 +613,12 @@ public class CuentaT {
                                 buffer.append("-");
                             }
                             buffer.append("\n");
-                            buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                            if(clonDebe.peekFirst().getMonto() < 1000000)
+                                    {
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }
                             //Se imprime linea antes de la magnitud final
                             for (int i = 0; i < lineas; i++) {//de 0 a lineas se crean los guiones PARA EL CIERRE
                                 buffer.append("-");
@@ -397,12 +638,17 @@ public class CuentaT {
                 }
 
 
-            } else {
+            } else if(digito != 0) {
                 if (tamHaber >= tamDebe)//Si las transacciones en el haber son mayores o iguales a las del debe
                 {
                     while (clonHaber.size() > 1) {
                         if (clonDebe.size() > 1) {
-                            buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                            if(clonDebe.peekFirst().getMonto() < 1000000)
+                                    {
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }
                         } else {
                             buffer.append("\t\t").append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
 
@@ -411,9 +657,20 @@ public class CuentaT {
                 } else {
                     while (clonDebe.size() > 1) {
                         if (clonHaber.size() > 1) {
-                            buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                            if(clonDebe.peekFirst().getMonto() < 1000000)
+                                    {
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }
                         } else {
-                            buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append("\n");
+                            if(clonDebe.peekFirst().getMonto() < 1000000)
+                            {
+                                buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\t").append("\n");
+                            }else{
+                                buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append("\n");
+                            }
+                            
                         }
 
                     }
@@ -423,7 +680,12 @@ public class CuentaT {
                     buffer.append("-");
                 }
                 buffer.append("\n");
-                buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                if(clonDebe.peekFirst().getMonto() < 1000000)
+                                    {
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }else{
+                                        buffer.append(clonDebe.pollFirst().toString()).append("\t|\t").append(clonHaber.pollFirst().toString()).append("\n");
+                                    }
                 for (int i = 0; i < lineas; i++) {//de 0 a 74 se crean los guiones PARA EL CIERRE
                     buffer.append("-");
                 }
@@ -434,7 +696,20 @@ public class CuentaT {
             }
 
         }
-
+        /**
+         * Esta ultima condicion es solo para poner la doble linea al final de la cuenta Utilidad del Ejercicio
+         * 
+         */
+        if(codigo == 3605)
+        {
+           for (int i = 0; i < lineas; i++) {//de 0 a 74 se crean los guiones PARA EL CIERRE
+                    buffer.append("-");
+                }
+                buffer.append("\n");
+                for (int i = 0; i < lineas; i++) {//de 0 a 74 se crean los guiones PARA EL CIERRE
+                    buffer.append("-");
+                } 
+        }
         return buffer.toString();
 
     }

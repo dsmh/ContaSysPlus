@@ -74,6 +74,16 @@ public class LibroMayor
             temp.cerrar(fecha, resumenDeGastosEIngresos);
             libroMayor.put(temp.codigo, temp);
         }
+        CuentaT utilidadDelEjercicio = new CuentaT(3605,puc);
+        resumenDeGastosEIngresos.cerrar(fecha, null);
+        if(resumenDeGastosEIngresos.saldo < 0)
+        {
+            utilidadDelEjercicio.afectarDebe(resumenDeGastosEIngresos.saldo*-1, fecha, fecha);
+        }else
+        {
+            utilidadDelEjercicio.afectarHaber(resumenDeGastosEIngresos.saldo, fecha, fecha);
+        }
+        libroMayor.put(utilidadDelEjercicio.codigo, utilidadDelEjercicio);
         libroMayor.put(resumenDeGastosEIngresos.codigo, resumenDeGastosEIngresos);
         return resumenDeGastosEIngresos;
     }
@@ -100,15 +110,6 @@ public class LibroMayor
             if((digito == 1) || (digito == 2) || (digito == 3) || (digito == 4) || (digito == 5) )
             {
                 balance.addLast(temp);
-                /*
-      
-                switch(digito)
-                {
-                    case 1: 
-                    {
-                        balance.addLast(temp);
-                    } 
-                }*/
             }
         }
         return balance;
