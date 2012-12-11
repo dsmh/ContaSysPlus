@@ -6,6 +6,7 @@ import java.util.LinkedList;
 
 public class LibroMayor 
 {
+    boolean estado = false;//false si el libro esta abierto
     //El libro mayor contendra el PUC TODO: mirar si se gestiona mejor la memoria asi
     PUC puc = new PUC();
     private TreeMap<Integer,CuentaT> libroMayor;
@@ -65,6 +66,7 @@ public class LibroMayor
      */
     public CuentaT cerrarLibro(String fecha)
     {
+        estado = true;//Estado de libro cerrado
         CuentaT resumenDeGastosEIngresos = new CuentaT(0000,puc);
         TreeMap<Integer,CuentaT> clonLibro = (TreeMap<Integer,CuentaT>)libroMayor.clone();
         libroMayor.clear();
@@ -113,6 +115,102 @@ public class LibroMayor
             }
         }
         return balance;
+    }
+    
+    /**
+     * Retorna el total de los ingresos consignados en el libro mayor
+     * se utiliza para construir el estado de resultados.
+     * @return 
+     */
+    public double totalIngresos()
+    {
+        double totalIngresos=0;
+        CuentaT temp;
+        @SuppressWarnings("unchecked")
+        TreeMap<Integer,CuentaT> clonLibro = (TreeMap<Integer,CuentaT>)libroMayor.clone();
+        while(clonLibro.size() > 0)
+        {
+            temp = clonLibro.pollFirstEntry().getValue();
+            if(temp.digito()== 4)
+            {
+                totalIngresos += temp.saldo *-1;//TODO: REVISAR SI LAS CUENTAS INGRESOS SI TIENEN EL VALOR NECESARIO EN EL SALDO
+            }
+        }
+        
+        return totalIngresos;
+    }
+    
+    /**
+     * Retorna el total de los gastos consignados en el libro mayor
+     * @return 
+     */
+    public double totalGastos()
+    {
+        double totalGastos=0;
+        CuentaT temp;
+        @SuppressWarnings("unchecked")
+        TreeMap<Integer,CuentaT> clonLibro = (TreeMap<Integer,CuentaT>)libroMayor.clone();
+        while(clonLibro.size() > 0)
+        {
+            temp = clonLibro.pollFirstEntry().getValue();
+            if(temp.digito()== 5)
+            {
+                totalGastos += temp.saldo *-1;//TODO: REVISAR SI LAS CUENTAS GASTOS SI TIENEN EL VALOR NECESARIO EN EL SALDO
+            }
+        }        
+        return totalGastos;
+    }
+    
+    /**
+     * Retorna una lista doblemente enlazada con todas las cuentas de gatos
+     * @return 
+     */
+    public LinkedList<CuentaT> getGastos()
+    {
+        CuentaT temp;
+        LinkedList<CuentaT> listaCuentas = new LinkedList<CuentaT>();
+        @SuppressWarnings("unchecked")
+        TreeMap<Integer,CuentaT> clonLibro = (TreeMap<Integer,CuentaT>)libroMayor.clone();
+        while(clonLibro.size() > 0)
+        {
+            temp = clonLibro.pollFirstEntry().getValue();
+            if(temp.digito()== 5)
+            {
+                listaCuentas.add(temp);
+            }
+        }        
+        return listaCuentas;
+    }
+    
+    
+    /**
+     * Retorna una lista doblemente enlazada con las cuentas de Ingresos
+     * @return 
+     */
+    public LinkedList<CuentaT> getIngresos()
+    {
+        CuentaT temp;
+        LinkedList<CuentaT> listaCuentas = new LinkedList<CuentaT>();
+        @SuppressWarnings("unchecked")
+        TreeMap<Integer,CuentaT> clonLibro = (TreeMap<Integer,CuentaT>)libroMayor.clone();
+        while(clonLibro.size() > 0)
+        {
+            temp = clonLibro.pollFirstEntry().getValue();
+            if(temp.digito()== 4)
+            {
+                listaCuentas.add(temp);
+            }
+        }        
+        return listaCuentas;
+    }
+    
+    /**
+     * Retorna true si el libro esta cerrado
+     * @return 
+     */
+    public boolean isClose()
+    {
+        return estado;
     }
     
     public String toString()
