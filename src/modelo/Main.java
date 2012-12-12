@@ -9,10 +9,10 @@ package modelo;
  * @author dsm
  */
 public class Main {
-    
+    /*
     public static void main(String args[])
     {
-        /*
+        
         PUC puc = new PUC();
         puc.nuevaCuenta(59558, "cuenta de prueba");
         
@@ -57,6 +57,6 @@ public class Main {
         Servicios.cerrar("16/11/2012", resumenDeGastosEIngresos);
         
         System.out.println(Servicios.toString());
-        */
-    }
+        
+    }*/
 }

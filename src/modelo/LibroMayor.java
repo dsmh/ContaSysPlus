@@ -10,10 +10,12 @@ public class LibroMayor
     //El libro mayor contendra el PUC TODO: mirar si se gestiona mejor la memoria asi
     PUC puc = new PUC();
     private TreeMap<Integer,CuentaT> libroMayor;
+    public CalendarDriver fechaCierre;
     
     public LibroMayor()
     {
         libroMayor = new TreeMap<Integer,CuentaT>();
+        fechaCierre = new CalendarDriver();
     }
     /**
      * Este metodo encuentra la cuenta a afectar, y deposita en ella la transaccion
@@ -67,6 +69,7 @@ public class LibroMayor
     public CuentaT cerrarLibro(String fecha)
     {
         estado = true;//Estado de libro cerrado
+        fechaCierre.setDate(fecha); 
         CuentaT resumenDeGastosEIngresos = new CuentaT(0000,puc);
         TreeMap<Integer,CuentaT> clonLibro = (TreeMap<Integer,CuentaT>)libroMayor.clone();
         libroMayor.clear();
@@ -202,6 +205,69 @@ public class LibroMayor
             }
         }        
         return listaCuentas;
+    }
+    
+    /**
+     * Retorna una lista enlazada con todas las cuentas del activo
+     * @return 
+     */
+    public LinkedList<CuentaT> getActivos()
+    {
+        CuentaT temp;
+        LinkedList<CuentaT> listaCuentas = new LinkedList<CuentaT>();
+        @SuppressWarnings("unchecked")
+        TreeMap<Integer,CuentaT> clonLibro = (TreeMap<Integer,CuentaT>)libroMayor.clone();
+        while(clonLibro.size() > 0)
+        {
+            temp = clonLibro.pollFirstEntry().getValue();
+            if(temp.digito()== 1)
+            {
+                listaCuentas.add(temp);
+            }
+        }        
+        return listaCuentas;        
+    }
+    
+    /**
+     * Retorna una lista enlazada con todas las cuentas del pasivo
+     * @return 
+     */
+    public LinkedList<CuentaT> getPasivos()
+    {
+        CuentaT temp;
+        LinkedList<CuentaT> listaCuentas = new LinkedList<CuentaT>();
+        @SuppressWarnings("unchecked")
+        TreeMap<Integer,CuentaT> clonLibro = (TreeMap<Integer,CuentaT>)libroMayor.clone();
+        while(clonLibro.size() > 0)
+        {
+            temp = clonLibro.pollFirstEntry().getValue();
+            if(temp.digito()== 2)
+            {
+                listaCuentas.add(temp);
+            }
+        }        
+        return listaCuentas;        
+    }
+    
+    /**
+     * Retorna una lista enlazada con todas las cuentas del patrimonio
+     * @return 
+     */
+    public LinkedList<CuentaT> getPatrimonio()
+    {
+        CuentaT temp;
+        LinkedList<CuentaT> listaCuentas = new LinkedList<CuentaT>();
+        @SuppressWarnings("unchecked")
+        TreeMap<Integer,CuentaT> clonLibro = (TreeMap<Integer,CuentaT>)libroMayor.clone();
+        while(clonLibro.size() > 0)
+        {
+            temp = clonLibro.pollFirstEntry().getValue();
+            if(temp.digito()== 3)
+            {
+                listaCuentas.add(temp);
+            }
+        }        
+        return listaCuentas;        
     }
     
     /**

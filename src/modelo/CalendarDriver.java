@@ -76,6 +76,24 @@ public class CalendarDriver implements Serializable
         return buffer.toString();
     }
     
+    /**
+     * 
+     * (ejemplo: sat dic 01 2012 se convierte en dic 2012 )
+     * @return Retorna solo el mes y el año de la fecha.
+     */
+    public String getMesAño()
+    {
+        StringBuilder buffer = new StringBuilder();
+        String procesar = this.getDate();
+        StringTokenizer tok = new StringTokenizer(procesar);
+        String kill;
+        kill = tok.nextToken();
+        buffer.append(tok.nextToken());
+        kill = tok.nextToken();
+        buffer.append("  ");
+        buffer.append(tok.nextToken());
+        return buffer.toString();
+    }
     public String getAge()
     {
         Date actual = new Date();

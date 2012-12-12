@@ -56,7 +56,7 @@ public class EstadoDeResultados
             buffer.append("*");            
         }
         buffer.append("\n\n");
-        buffer.append("TOTAL INGRESOS------------------------------- "+nf.format(totalIngresos)+"\n");
+        buffer.append("TOTAL INGRESOS------------------------------- \t"+nf.format(totalIngresos)+"\n");
         while(ingresos.size() > 0)
         {
             CuentaT temp = ingresos.pollFirst();
@@ -72,7 +72,7 @@ public class EstadoDeResultados
                 buffer.append("\t").append(temp.codigo+"  "+temp.nombre).append("\t\t"+nf.format(temp.saldo)+"\n");
             }
         }
-        buffer.append("TOTAL GASTOS--------------------------------- "+nf.format(totalGastos) +"\n");
+        buffer.append("TOTAL GASTOS--------------------------------- \t"+nf.format(totalGastos) +"\n");
         while(gastos.size() > 0)
         {
             CuentaT temp = gastos.pollFirst();
@@ -89,9 +89,9 @@ public class EstadoDeResultados
             }
         }
         
-        buffer.append("UTILIDAD DEL EJERCICIO----------------------- "+nf.format(utilidadDelEjercicio) +"\n");
-        buffer.append("IMPUESTO 33%--------------------------------- "+nf.format(impuesto) +"\n");
-        buffer.append("UTILIDAD NETA-------------------------------- "+nf.format(utilidadNeta) +"\n");
+        buffer.append("UTILIDAD DEL EJERCICIO----------------------- \t"+nf.format(utilidadDelEjercicio) +"\n");
+        buffer.append("IMPUESTO 33%--------------------------------- \t"+nf.format(impuesto) +"\n");
+        buffer.append("UTILIDAD NETA-------------------------------- \t"+nf.format(utilidadNeta) +"\n");
         
         return buffer.toString();
     }
